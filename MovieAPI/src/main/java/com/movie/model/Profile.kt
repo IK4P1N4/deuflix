@@ -14,7 +14,10 @@ data class Profile(
         val UId: Long,
 
         @Column(name = "p_name")
-        val pName: String
+        val pName: String,
+
+        @Column(name = "p_image")
+        val pImage: String
 ) {
     companion object {
         @JvmStatic
@@ -22,7 +25,8 @@ data class Profile(
             return ProfileDto(
                     profile.id,
                     profile.UId,
-                    profile.pName
+                    profile.pName,
+                    profile.pImage
             )
         }
     }

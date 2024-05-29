@@ -5,7 +5,8 @@ import com.movie.model.Profile
 data class ProfileDto(
         val id: Int,
         val UId: Long,
-        val pName: String
+        val pName: String,
+        val pImage: String
 ) {
     companion object {
         @JvmStatic
@@ -13,7 +14,8 @@ data class ProfileDto(
             return ProfileDto(
                     from.id,
                     from.UId,
-                    from.pName
+                    from.pName,
+                    from.pImage
             )
         }
     }
