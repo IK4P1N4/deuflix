@@ -20,14 +20,14 @@ public class ProfileService {
     public List<ProfileDto> getAllProfiles() {
         List<Profile> profiles = profileRepository.findAll();
         return profiles.stream()
-                .map(profile -> new ProfileDto(profile.getId(), profile.getUId(), profile.getPName()))
+                .map(profile -> new ProfileDto(profile.getId(), profile.getUId(), profile.getPName(), profile.getPImage()))
                 .collect(Collectors.toList());
     }
 
     public List<ProfileDto> getProfilesByUId(Long uId) {
         List<Profile> profiles = profileRepository.findByUId(uId);
         return profiles.stream()
-                .map(profile -> new ProfileDto(profile.getId(), profile.getUId(), profile.getPName()))
+                .map(profile -> new ProfileDto(profile.getId(), profile.getUId(), profile.getPName(), profile.getPImage()))
                 .collect(Collectors.toList());
     }
 }
