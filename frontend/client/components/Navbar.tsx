@@ -6,7 +6,8 @@ import { RiShutDownLine } from "react-icons/ri";
 
 const Navbar: React.FC = () => {
   const [isScroll, setIsScroll] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false); // 드롭다운 표시 상태 관리
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [profileName, setProfileName] = useState<string | null>(null);
   const userState = useContext(UserContext);
   const router = useRouter();
 
@@ -25,6 +26,11 @@ const Navbar: React.FC = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+  }, []);
+
+  useEffect(() => {
+    const name = window.localStorage.getItem('selectedProfileName');
+    setProfileName(name);
   }, []);
 
   const handleMouseEnter = () => {
@@ -74,9 +80,9 @@ const Navbar: React.FC = () => {
             onMouseLeave={handleMouseLeave}
         >
           <div className="font-bold">
-            {userState && userState.state?.token
-                ? userState.state.name // 여기서 유저의 이름을 표시합니다.
-                : "사용자"}
+            {profileName ? profileName : (userState && userState.state?.token
+                ? userState.state.name
+                : "사용자")}
           </div>
 
           <div className="w-8 flex ml-4 mr-4">
@@ -88,11 +94,10 @@ const Navbar: React.FC = () => {
 
           {showDropdown && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10">
-                <Link href="/profile">
-                  <a className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                    프로필 편집
-                  </a>
+                <Link href={`/profiles?userId=${userState?.state?.id}`}>
+                  <a className="block px-4 py-2 text-gray-800 hover:bg-gray-200">프로필 편집</a>
                 </Link>
+
                 <a
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                     onClick={logout}

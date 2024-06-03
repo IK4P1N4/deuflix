@@ -6,16 +6,18 @@ data class ProfileDto(
         val id: Int,
         val UId: Long,
         val pName: String,
-        val pImage: String
+        val pImage: String,
+        val age: String
 ) {
     companion object {
         @JvmStatic
-        fun convert(from: Profile): ProfileDto {
+        fun fromEntity(profile: Profile): ProfileDto {
             return ProfileDto(
-                    from.id,
-                    from.UId,
-                    from.pName,
-                    from.pImage
+                    profile.id,
+                    profile.UId,
+                    profile.pName,
+                    profile.pImage,
+                    profile.age
             )
         }
     }

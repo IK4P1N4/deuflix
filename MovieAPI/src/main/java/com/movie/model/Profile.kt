@@ -1,6 +1,5 @@
 package com.movie.model
 
-import com.movie.dto.ProfileDto
 import javax.persistence.*
 
 @Entity
@@ -8,7 +7,7 @@ import javax.persistence.*
 data class Profile(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int,
+        val id: Int = 0,
 
         @Column(name = "u_id")
         val UId: Long,
@@ -17,17 +16,16 @@ data class Profile(
         val pName: String,
 
         @Column(name = "p_image")
-        val pImage: String
+        val pImage: String,
+
+        @Column(name = "age")
+        val age: String
 ) {
-    companion object {
-        @JvmStatic
-        fun convertToDto(profile: Profile): ProfileDto {
-            return ProfileDto(
-                    profile.id,
-                    profile.UId,
-                    profile.pName,
-                    profile.pImage
-            )
-        }
-    }
+    constructor(uId: Long, pName: String, pImage: String, age: String) : this(
+            id = 0,
+            UId = uId,
+            pName = pName,
+            pImage = pImage,
+            age = age
+    )
 }
