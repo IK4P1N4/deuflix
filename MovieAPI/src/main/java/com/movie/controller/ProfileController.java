@@ -28,14 +28,14 @@ public class ProfileController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<ProfileDto> insertProfile(@RequestBody ProfileCreateRequest request) {
+    public ResponseEntity<String> createProfile(@RequestBody ProfileCreateRequest profileCreateRequest) {
+        System.out.println("Received ProfileCreateRequest: " + profileCreateRequest); // 디버깅용 로그 추가
         try {
-            System.out.println("Request received: " + request);  // 요청 로깅
-            ProfileDto createdProfile = profileService.insertProfile(request);
-            return ResponseEntity.ok(createdProfile);
+            profileService.createProfile(profileCreateRequest);
+            return new ResponseEntity<>("Profile created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
-            e.printStackTrace();  // 에러 스택 트레이스 출력
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            e.printStackTrace(); // 오류 세부 사항을 로그에 출력
+            return new ResponseEntity<>("Failed to create profile", HttpStatus.BAD_REQUEST);
         }
     }
 

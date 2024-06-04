@@ -32,14 +32,13 @@ public class ProfileService {
                 .collect(Collectors.toList());
     }
 
-    public ProfileDto insertProfile(ProfileCreateRequest request) {
-        Profile newProfile = new Profile(
-                request.getUId(),
-                request.getPName(),
-                request.getPImage(),
-                request.getAge()  // Add this line to include age
+    public void createProfile(ProfileCreateRequest profileCreateRequest) {
+        Profile profile = new Profile(
+                profileCreateRequest.getUId(),
+                profileCreateRequest.getPName(),
+                profileCreateRequest.getPImage(),
+                profileCreateRequest.getAge()
         );
-        Profile savedProfile = profileRepository.save(newProfile);
-        return ProfileDto.fromEntity(savedProfile);
+        profileRepository.save(profile);
     }
 }

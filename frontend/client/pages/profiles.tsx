@@ -27,13 +27,17 @@ const ProfilesPage: NextPage<ProfilesPageProps> = ({ profiles }) => {
     };
 
     const handleCreateProfile = () => {
-        router.push("/create_profile");
+        if (userState?.state?.id) {
+            router.push(`/create_profile?userId=${userState.state.id}`);
+        } else {
+            // 로그인 되어 있지 않은 경우 처리
+            console.error("User is not logged in");
+        }
     };
 
     const handleEditProfile = () => {
         const userId = userState?.state?.id;
         if (userId) {
-            //router.push(`/edit_profile?userId=${userId}`);
             router.push(`/profiles_edit?userId=${userId}`);
         }
     };

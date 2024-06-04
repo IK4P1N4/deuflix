@@ -10,12 +10,13 @@ import { UserContext } from "../context/UserContext";
 const CreateProfile: NextPage = () => {
     const [profileName, setProfileName] = useState("");
     const [profileImage, setProfileImage] = useState("");
+    const [age, setAge] = useState("");
     const userState = useContext(UserContext);
     const router = useRouter();
 
     const submitHandler = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        if (!userState || !userState.state) {
+        if (!userState || !userState.state || !userState.state.id) {
             toast.error("User is not logged in");
             return;
         }
@@ -27,6 +28,7 @@ const CreateProfile: NextPage = () => {
                     uId: userState.state.id,
                     pName: profileName,
                     pImage: profileImage,
+                    age: age,
                 },
                 {
                     headers: {
@@ -39,7 +41,11 @@ const CreateProfile: NextPage = () => {
             router.push(`/profiles?userId=${userState.state.id}`);
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                toast.error(error.response?.data.message);
+                if (error.response?.status === 400) {
+                    toast.error(error.response.data.message);
+                } else {
+                    toast.error("Failed to create profile");
+                }
             } else {
                 toast.error("Something went wrong");
             }
@@ -47,7 +53,7 @@ const CreateProfile: NextPage = () => {
     };
 
     return (
-        <div className="relative flex h-screen w-screen flex-col md:items-center md:justify-center md:bg-transparent">
+        <div className="relative flex h-screen w-screen flex-col md:items-center md:justify-center md:bg-transparent" style={{ userSelect: 'none' }}>
             <Head>
                 <title>Create Profile</title>
             </Head>
@@ -72,29 +78,39 @@ const CreateProfile: NextPage = () => {
             >
                 <h1 className="text-4xl font-semibold">Create Profile</h1>
                 <div className="space-y-4">
-                    <label className="inline-block w-full">
+                    <label className="block text-white">
+                        Profile Name
                         <input
                             type="text"
-                            placeholder="Profile Name"
-                            className="w-full rounded bg-[#333333] px-5 py-3.5 placeholder-[gray] outline-none"
+                            className="mt-1 block w-full rounded bg-gray-900 text-white px-3 py-2"
                             value={profileName}
                             onChange={(e) => setProfileName(e.target.value)}
                             required
                         />
                     </label>
-                    <label className="inline-block w-full">
+                    <label className="block text-white">
+                        Profile Image URL (Optional)
                         <input
                             type="text"
-                            placeholder="Profile Image URL"
-                            className="w-full rounded bg-[#333333] px-5 py-3.5 placeholder-[gray] outline-none"
+                            className="mt-1 block w-full rounded bg-gray-900 text-white px-3 py-2"
                             value={profileImage}
                             onChange={(e) => setProfileImage(e.target.value)}
+                        />
+                    </label>
+                    <label className="block text-white">
+                        Age
+                        <input
+                            type="text"
+                            className="mt-1 block w-full rounded bg-gray-900 text-white px-3 py-2"
+                            value={age}
+                            onChange={(e) => setAge(e.target.value)}
+                            required
                         />
                     </label>
                 </div>
                 <button
                     type="submit"
-                    className="w-full py-3.5 bg-[#e50914] rounded font-semibold text-lg text-white uppercase tracking-wide hover:bg-[#b20710] transition duration-200"
+                    className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded mt-4"
                 >
                     Create Profile
                 </button>
