@@ -2,15 +2,16 @@ import axios from "axios";
 import { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "../context/UserContext";
 
 type Profile = {
     id: number;
     UId: number;
-    pname: string;
+    pName: string;
     pImage: string | null; // 프로필 이미지 경로
+    age: string;
 };
 
 interface ProfilesPageProps {
@@ -38,7 +39,7 @@ const ProfilesPage: NextPage<ProfilesPageProps> = ({ profiles }) => {
     };
 
     const handleEditProfile = (profileId: number) => {
-        router.push(`/edit_profile?profileId=${profileId}`);
+        router.push(`/edit_profiles?profileId=${profileId}`);
     };
 
     const enterEditMode = () => {
@@ -49,12 +50,13 @@ const ProfilesPage: NextPage<ProfilesPageProps> = ({ profiles }) => {
         setIsEditMode(false);
     };
 
-    useEffect(() => {
-        profiles.forEach(profile => {
-            console.log("Profile:", profile); // 프로필 전체 출력
-            console.log("pImage : " + profile.pImage);
-        });
-    }, [profiles]);
+    if (!profiles) {
+        return (
+            <div>
+                <p>Loading...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="relative flex h-screen w-screen flex-col md:items-center md:justify-center md:bg-transparent" style={{ userSelect: 'none' }}>
@@ -82,12 +84,12 @@ const ProfilesPage: NextPage<ProfilesPageProps> = ({ profiles }) => {
                     {profiles.map((profile) => (
                         <div key={profile.id} className="relative bg-gray-800 text-white px-4 py-2 rounded cursor-pointer flex-1 flex flex-col items-center mb-4">
                             <button
-                                onClick={() => isEditMode ? handleEditProfile(profile.id) : handleProfileClick(profile.id, profile.pname)}
-                                className={`relative bg-gray-800 text-white px-4 py-2 rounded cursor-pointer z-10 flex flex-col items-center ${isEditMode ? "opacity-50 cursor-not-allowed" : ""}`}
+                                onClick={() => isEditMode ? handleEditProfile(profile.id) : handleProfileClick(profile.id, profile.pName)}
+                                className={`relative bg-gray-800 text-white px-4 py-2 rounded cursor-pointer z-10 flex flex-col items-center ${isEditMode ? "opacity-50 cursor-pointer" : ""}`}
                             >
                                 <div className="h-24 w-24 overflow-hidden">
                                     {profile.pImage ? (
-                                        <img src={profile.pImage} alt={profile.pname} className="h-full w-full object-cover" />
+                                        <img src={profile.pImage} alt={profile.pName} className="h-full w-full object-cover" />
                                     ) : (
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png?20201013161117" alt="Default Profile" className="h-full w-full object-cover" />
                                     )}

@@ -13,13 +13,13 @@ data class Profile(
         val UId: Long,
 
         @Column(name = "p_name")
-        val pName: String,
+        var pName: String,
 
         @Column(name = "p_image")
-        val pImage: String,
+        var pImage: String,
 
         @Column(name = "age")
-        val age: String
+        var age: String
 ) {
     constructor(uId: Long, pName: String, pImage: String, age: String) : this(
             id = 0,

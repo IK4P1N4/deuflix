@@ -2,9 +2,9 @@ package com.movie.controller;
 
 import com.movie.dto.ProfileDto;
 import com.movie.request.ProfileCreateRequest;
+import com.movie.request.ProfileUpdateRequest;
 import com.movie.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,16 +27,23 @@ public class ProfileController {
         return profileService.getProfilesByUId(uId);
     }
 
-    @PostMapping("/insert")
-    public ResponseEntity<String> createProfile(@RequestBody ProfileCreateRequest profileCreateRequest) {
-        System.out.println("Received ProfileCreateRequest: " + profileCreateRequest); // 디버깅용 로그 추가
-        try {
-            profileService.createProfile(profileCreateRequest);
-            return new ResponseEntity<>("Profile created successfully", HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace(); // 오류 세부 사항을 로그에 출력
-            return new ResponseEntity<>("Failed to create profile", HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<ProfileDto> getProfileById(@PathVariable Integer id) {
+        return profileService.getProfileById(id);
     }
 
+    @PostMapping("/insert")
+    public ResponseEntity<ProfileDto> createProfile(@RequestBody ProfileCreateRequest request) {
+        return profileService.createProfile(request);
+    }
+
+    @PutMapping("/update/{profileId}")
+    public ResponseEntity<ProfileDto> updateProfile(@PathVariable int profileId, @RequestBody ProfileUpdateRequest request) {
+        ProfileDto updatedProfile = profileService.updateProfile(profileId, request);
+        if (updatedProfile != null) {
+            return ResponseEntity.ok(updatedProfile);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
