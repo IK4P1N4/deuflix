@@ -85,7 +85,7 @@ const EditProfilePage: NextPage<EditProfilePageProps> = ({ profile }) => {
                 onSubmit={handleUpdateProfile}
                 className="relative mt-20 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14"
             >
-                <h1 className="text-4xl font-semibold">Edit Profile</h1>
+                <h1 className="text-4xl font-semibold dev">Edit Profile</h1>
                 <div className="space-y-4">
                     <label className="block text-white">
                         Profile Name
